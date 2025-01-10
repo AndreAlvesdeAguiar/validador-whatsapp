@@ -34,7 +34,7 @@ async def validar_whatsapp():
         print("Login concluído!")
 
         # Iterar sobre os números de telefone
-        for i, cpf in enumerate(base["cpf"]):
+        for i, id in enumerate(base["id"]):
             telefone = base.loc[i, 'telefone']
             link = f'https://web.whatsapp.com/send?phone=+{telefone}&text='
             await page.goto(link)
@@ -45,15 +45,15 @@ async def validar_whatsapp():
                 await page.wait_for_selector('//*[@id="main"]/footer/div[1]/div/span/div/div[2]/div[1]/div[2]/div[1]/p', timeout=60000)
                 print(i + 1, "WhatsApp Válido")
                 validos.append(telefone)
-                base.loc[base["cpf"] == cpf, 'Whatsapp'] = 'Valido'
+                base.loc[base["id"] == id, 'Whatsapp'] = 'Valido'
 
             except Exception:
                 print(i + 1, "WhatsApp Inválido")
                 invalidos.append(telefone)
-                base.loc[base["cpf"] == cpf, 'Whatsapp'] = 'Invalido'
+                base.loc[base["id"] == id, 'Whatsapp'] = 'Invalido'
 
             # Salvar progresso a cada iteração
-            base.to_excel('/home/raspberrypi/Downloads/Numeros Validados2.xlsx', index=False)
+            base.to_excel('/home/raspberrypi/Downloads/Numeros_Validados2.xlsx', index=False)
 
         # Encerrar o navegador
         await browser.close()
